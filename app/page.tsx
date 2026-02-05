@@ -1,5 +1,9 @@
-import Image from "next/image";
+"use client";
+
+import { useAsideStore } from "@/store/useAside";
 
 export default function Home() {
-  return <div></div>;
+  const dashboardMode = useAsideStore((state) => state.asideMode.dashboardMode);
+
+  return <div>{dashboardMode}</div>;
 }
