@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCompletion } from "@ai-sdk/react";
 
 interface LaboratoryFormData {
   prompt: string;
@@ -9,8 +10,17 @@ interface LaboratoryFormData {
 export const useLaboratoryForm = () => {
   const [formData, setFormData] = useState<LaboratoryFormData>({
     prompt: "",
-    model: "Gemini 2.5",
+    model: "gemini-1.5-flash",
     temperature: 0.5,
+  });
+
+  const { completion, complete, isLoading } = useCompletion({
+    api: "/api/chat",
+    streamProtocol: "text",
+    body: {
+      model: formData.model,
+      temperature: formData.temperature,
+    },
   });
   const handleChange = (
     e: React.ChangeEvent<
@@ -28,19 +38,17 @@ export const useLaboratoryForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/chat/route", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-    } catch (error) {}
+      await complete(formData.prompt);
+    } catch (error) {
+      console.error("Error completing prompt:", error);
+    }
   };
 
   return {
     formData,
     handleChange,
     handleSubmit,
+    completion,
+    isLoading,
   };
 };

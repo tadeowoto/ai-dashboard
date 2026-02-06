@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Laboratory() {
-  const { handleSubmit, formData, handleChange } = useLaboratoryForm();
-
+  const { handleSubmit, formData, handleChange, isLoading, completion } =
+    useLaboratoryForm();
+  console.log("Completion:", completion);
   return (
     <div className="w-full h-full bg-red-400 flex flex-row justify-between items-center p-10">
       {/* Prompt Input Section */}
@@ -74,11 +75,19 @@ export default function Laboratory() {
           </div>
         </nav>
         <div>
-          <h2 className="text-3xl font-semibold mb-4">Response</h2>
-          <p>
-            Here will be the response of the model, with all the analysis and
-            insights about the prompt you entered.
-          </p>
+          <section className="w-1/2 ...">
+            {/* Aquí mostramos la respuesta */}
+            <div className="prose prose-invert max-w-none">
+              <h2 className="text-3xl font-semibold mb-4">Response</h2>
+              {completion ? (
+                <div className="whitespace-pre-wrap">{completion}</div>
+              ) : (
+                <p className="text-zinc-500 italic">
+                  Waiting for your prompt...
+                </p>
+              )}
+            </div>
+          </section>
         </div>
       </section>
     </div>
