@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useLaboratoryForm } from "@/hooks/useLaboratoryForm";
 import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
@@ -10,46 +11,56 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Laboratory() {
+  const { handleSubmit, formData, handleChange } = useLaboratoryForm();
+
   return (
     <div className="w-full h-full bg-red-400 flex flex-row justify-between items-center p-10">
       {/* Prompt Input Section */}
-      <section className="w-1/2 h-full flex flex-col justify-start items-start gap-10">
+      <form
+        className="w-1/2 h-full flex flex-col justify-start items-start gap-10"
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <nav>
           <h2 className="text-3xl font-semibold mb-4">Prompt Input</h2>
           <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">Gemini 2.5</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuGroup>
-                  <DropdownMenuLabel></DropdownMenuLabel>
-                  <DropdownMenuItem>Models cooming soon</DropdownMenuItem>
-                  <DropdownMenuItem>Models cooming soon</DropdownMenuItem>
-                  <DropdownMenuItem>Models cooming soon</DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <div>{/* Temperature goes here*/}</div>
+            <select name="model" value={formData.model} onChange={handleChange}>
+              <option value="claude-3-opus-20250219">Claude Opus</option>
+              <option value="claude-3-sonnet-20250229">Claude Sonnet</option>
+            </select>
+            <div>
+              <input
+                type="range"
+                name="temperature"
+                min="0"
+                max="1"
+                step="0.1"
+                value={formData.temperature}
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </nav>
-        <div>
-          <form action="">
-            <Textarea placeholder="Enter your prompt here..." />
-            <Button type="submit" className="mt-4">
-              Analize your prompt
-            </Button>
-          </form>
-        </div>
-      </section>
-      <section>
+        <Textarea
+          placeholder="Enter your prompt here..."
+          className="w-full"
+          name="prompt"
+          value={formData.prompt}
+          onChange={handleChange}
+        />
+        <Button type="submit" className="mt-4">
+          Analize your prompt
+        </Button>
+      </form>
+      <section className="flex flex-col h-full justify-between">
         {/* Answer Response Section */}
         <nav>
           <h2 className="text-3xl font-semibold mb-4">Answer</h2>
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">Raw response</Button>
+                <Button variant="outline" type="button">
+                  Raw response
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
