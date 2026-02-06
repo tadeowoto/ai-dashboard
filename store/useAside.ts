@@ -12,7 +12,7 @@ interface State {
 
 export const useAsideStore = create<State>((set) => ({
     asideMode: {
-        dashboardMode: "Proyects",
+        dashboardMode: "Laboratory",
     },
     setDashboardMode: (mode) => set({ asideMode: { dashboardMode: mode } }),
 }))
