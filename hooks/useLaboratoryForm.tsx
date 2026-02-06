@@ -28,7 +28,13 @@ export const useLaboratoryForm = () => {
     e.preventDefault();
 
     try {
-      // Simulate API call
+      const response = await fetch("/api/chat/route", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
     } catch (error) {}
   };
 
